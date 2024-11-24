@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Home - PDF Editor App{% endblock %}
+
+{% block content %}
+<!-- <p class="lead">Easily upload, view, and edit your PDFs all in one place.</p> -->
+
+<header class="text-center py-5 bg-light">
+    <h1>Welcome to the PDF Editor App</h1>
+    <p class="lead">Easily upload, edit, and manage PDFs with powerful tools.</p>
+    <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Get Started</a>
+    <a href="#featues" class="btn btn-primary btn-lg">Explore Features</a>
+</header>
+
+<!-- Upload Section -->
+<section id="upload" class="bg-light py-5">
+    <div class="container text-center">
+        <h2>Upload Your PDF</h2>
+        <p class="lead">Start your journey by uploading a PDF today!</p>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <a href="{% url 'upload_pdf' %}" class="btn btn-primary btn-lg w-100">Upload a New PDF</a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'pdf_list' %}" class="btn btn-secondary btn-lg w-100">View Uploaded PDFs</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <h2 class="text-center mb-4">Why Choose Us?</h2>
+    <div class="row text-center">
+        <div class="col-md-4">
+            <i class="bi bi-cloud-upload fs-1 text-primary"></i>
+            <h4 class="mt-3">Easy Upload</h4>
+            <p>Drag, drop, and upload PDFs in seconds with our simple interface.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="bi bi-pencil-square fs-1 text-primary"></i>
+            <h4 class="mt-3">Advanced Editing</h4>
+            <p>Edit text, images, and layout directly within your PDF documents.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="bi bi-shield-check fs-1 text-primary"></i>
+            <h4 class="mt-3">Secure and Private</h4>
+            <p>Your documents are safe with our industry-grade encryption.</p>
+        </div>
+    </div>
+</section>
+
+<!--Features section-->
+<section class="py-5" id="features">
+    <h2 class="text-center mb-4">Features</h2>
+    <div class="row text-center">
+        <div class="col-md-4">
+            <i class="bi bi-file-earmark-plus fs-1 text-primary"></i>
+            <h4 class="mt-3">Upload PDFs</h4>
+            <p>Quickly upload your PDF files and start editing in seconds.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="bi bi-zoom-in fs-1 text-primary"></i>
+            <h4 class="mt-3">Zoom and Edit</h4>
+            <p>Zoom in and edit your PDFs with precision using our tools.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="bi bi-save fs-1 text-primary"></i>
+            <h4 class="mt-3">Save and Download</h4>
+            <p>Save your edits and download the PDFs with just one click.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

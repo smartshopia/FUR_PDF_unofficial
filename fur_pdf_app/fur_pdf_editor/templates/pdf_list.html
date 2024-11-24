@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF List</title>
+</head>
+<body>
+    <h1>Uploaded PDFs</h1>
+    <ul>
+        {% for pdf in pdfs %}
+            <li>
+                <a href="{% url 'view_pdf' pdf.id %}">{{ pdf.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'upload_pdf' %}">Upload a new PDF</a>
+</body>
+</html>

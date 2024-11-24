@@ -1,0 +1,275 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ pdf.title }}</title>
+
+    <!-- PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #pdf-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .pdf-page {
+            margin-bottom: 20px;
+            display: block;
+            max-width: 100%;
+            cursor: pointer; /* Pointer cursor for UX */
+        }
+        canvas {
+            border: 1px solid #ccc;
+        }
+        #controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #zoomControls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .zoom-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .zoom-btn:disabled {
+            background-color: #ccc;
+        }
+        #zoom-scale {
+            font-size: 16px;
+            padding: 5px;
+            text-align: center;
+            width: 60px;
+        }
+        #thumbnail-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .thumbnail {
+            width: 100px;
+            height: auto;
+            margin: 5px;
+            cursor: pointer;
+        }
+        button {
+            padding: 10px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ pdf.title }}</h1>
+
+    <!-- PDF Container (renders the pages here) -->
+    <div id="pdf-container"></div>
+
+    <!-- Navigation Controls -->
+    <div id="controls">
+        <button id="prevPage" onclick="navigatePage(-1)" disabled>Previous</button>
+        <span id="pageNumber">Page 1 of 1</span>
+        <button id="nextPage" onclick="navigatePage(1)" disabled>Next</button>
+    </div>
+
+    <!-- Zoom Controls -->
+    <div id="zoomControls">
+        <button class="zoom-btn" id="zoomInBtn" onclick="zoomIn()">+</button>
+        <input type="number" id="zoom-scale" value="150" min="50" max="300" step="10" onchange="onZoomScaleChange(event)" />
+        <button class="zoom-btn" id="zoomOutBtn" onclick="zoomOut()">-</button>
+    </div>
+
+    <!-- Thumbnails (previews of the pages) -->
+    <div id="thumbnail-container"></div>
+
+    <script>
+        const pdfUrl = "{{ pdf.file.url }}";  // Path to the uploaded PDF
+        const canvasContainer = document.getElementById('pdf-container');
+        const thumbnailContainer = document.getElementById('thumbnail-container');
+        const pageNumberElement = document.getElementById('pageNumber');
+        const prevPageButton = document.getElementById('prevPage');
+        const nextPageButton = document.getElementById('nextPage');
+        const zoomScaleElement = document.getElementById('zoom-scale');
+        const zoomInButton = document.getElementById('zoomInBtn');
+        const zoomOutButton = document.getElementById('zoomOutBtn');
+
+        let pdfDoc = null;
+        let currentPage = 1;
+        let scale = 1.5;  // Initial zoom scale
+        let totalPages = 0;
+        let canvas = null;
+        let context = null;
+
+        // Load the PDF
+        pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+            pdfDoc = pdf;
+            totalPages = pdf.numPages;
+            renderPage(currentPage);
+
+            // Create thumbnails for all pages
+            createThumbnails();
+
+            // Update page number display
+            updatePageNumberDisplay();
+        }).catch(error => {
+            console.error('Error loading PDF: ', error);
+        });
+
+        // Function to render a page
+        function renderPage(pageNum) {
+            pdfDoc.getPage(pageNum).then(page => {
+                const viewport = page.getViewport({ scale });
+
+                // Clear the container and create a new canvas for each page
+                canvasContainer.innerHTML = ''; // Clear the current page
+                canvas = document.createElement('canvas');
+                canvas.className = 'pdf-page';
+                context = canvas.getContext('2d');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                // Append the canvas to the container
+                canvasContainer.appendChild(canvas);
+
+                // Render the page into the canvas
+                page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                }).promise.then(() => {
+                    // Enable navigation buttons based on the page number
+                    prevPageButton.disabled = currentPage <= 1;
+                    nextPageButton.disabled = currentPage >= totalPages;
+
+                    // Add click event listener to canvas for zooming
+                    canvas.addEventListener('click', (e) => handleCanvasClick(e));
+                });
+            });
+        }
+
+        // Function to navigate between pages
+        function navigatePage(direction) {
+            currentPage += direction;
+            renderPage(currentPage);
+            updatePageNumberDisplay();
+        }
+
+        // Function to update page number display
+        function updatePageNumberDisplay() {
+            pageNumberElement.textContent = `Page ${currentPage} of ${totalPages}`;
+        }
+
+        // Handle click on the canvas to zoom in/out
+        function handleCanvasClick(event) {
+            const rect = canvas.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;  // X coordinate of the click within the canvas
+            const clickY = event.clientY - rect.top;   // Y coordinate of the click within the canvas
+
+            // Determine whether we are zooming in or out based on the current scale
+            const zoomFactor = scale < 2 ? 1.2 : 0.8;  // Zoom in if under 200%, else zoom out
+            scale = scale * zoomFactor;
+
+            // Limit zoom range
+            if (scale < 0.5) scale = 0.5;
+            if (scale > 3) scale = 3;
+
+            // Re-render the page after adjusting the zoom
+            renderPage(currentPage);
+
+            // Update the zoom scale display
+            zoomScaleElement.value = Math.round(scale * 100);
+        }
+
+        // Zoom In Function
+        function zoomIn() {
+            if (scale < 3) { // Zoom limit
+                scale *= 1.2;
+                renderPage(currentPage);
+                zoomScaleElement.value = Math.round(scale * 100);
+            }
+        }
+
+        // Zoom Out Function
+        function zoomOut() {
+            if (scale > 0.5) { // Zoom limit
+                scale *= 0.8;
+                renderPage(currentPage);
+                zoomScaleElement.value = Math.round(scale * 100);
+            }
+        }
+
+        // Function to handle the change in zoom scale (when user manually enters a value)
+        function onZoomScaleChange(event) {
+            let newScale = parseInt(event.target.value);
+
+            // Ensure the zoom level is within the valid range
+            if (newScale < 50) newScale = 50;
+            if (newScale > 300) newScale = 300;
+
+            scale = newScale / 100;  // Convert to a decimal scale (e.g., 150% -> 1.5)
+
+            // Re-render the page at the new scale
+            renderPage(currentPage);
+        }
+
+        // Create Thumbnails for all pages
+        function createThumbnails() {
+            for (let i = 1; i <= totalPages; i++) {
+                pdfDoc.getPage(i).then(page => {
+                    const viewport = page.getViewport({ scale: 0.2 }); // Smaller scale for thumbnails
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    const context = canvas.getContext('2d');
+
+                    page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise.then(() => {
+                        const thumbnailImage = document.createElement('img');
+                        thumbnailImage.src = canvas.toDataURL();
+                        thumbnailImage.className = 'thumbnail';
+                        thumbnailImage.onclick = () => {
+                            currentPage = i;
+                            renderPage(currentPage);
+                            updatePageNumberDisplay();
+                        };
+
+                        thumbnailContainer.appendChild(thumbnailImage);
+                    });
+                });
+            }
+        }
+    </script>
+
+    <!-- Options after upload -->
+    <div>
+        <a href="{% url 'pdf_list' %}">Back to PDF List</a>
+        <a href="{{ pdf.file.url }}" download>Download PDF</a>
+    </div>
+</body>
+</html>
