@@ -3,8 +3,9 @@ FUR_PDF is a Python-based project designed to simplify and enhance PDF processin
 
 ## Features
 
-- **Text Extraction**: Extract text from PDF files with ease.
-- **PDF Merging**: Combine multiple PDF files into one.
+- **Django-Based**: Built entirely using Django, leveraging its robust framework for efficient PDF processing.
+- **PDF Rendering**: Dynamically generate PDF files directly from Django templates.
+- **Form Handling**: Extract and populate PDF forms seamlessly within the Django environment.
 - **PDF Splitting**: Split large PDF files into smaller parts.
 - **Metadata Handling**: Access and modify PDF metadata.
 - **Custom Operations**: Extend functionality with custom scripts.
@@ -26,20 +27,32 @@ FUR_PDF is a Python-based project designed to simplify and enhance PDF processin
 
 ## Usage
 
-Run the main script to start using FUR_PDF:
-```bash
-python main.py
-```
+Using FUR_PDF is simple and user-friendly. Follow these steps to get started:
 
-### Example
+1. **Access the Web Interface**:
+    - Start the Django server by running:
+      ```bash
+      python manage.py runserver
+      ```
+    - Open your web browser and navigate to `http://127.0.0.1:8000`.
 
-Extract text from a PDF:
-```python
-from fur_pdf import extract_text
+2. **Upload Your PDF Files**:
+    - Use the provided web interface to upload the PDF files you want to process.
 
-text = extract_text("example.pdf")
-print(text)
-```
+3. **Choose an Operation**:
+    - Select the desired operation from the available options on the web interface:
+      - Extract text from a PDF.
+      - Split a large PDF into smaller parts.
+      - Populate or extract data from PDF forms.
+      - Generate new PDFs from templates.
+
+4. **Follow the Instructions**:
+    - The web interface will guide you through the process step-by-step. Provide the required inputs, such as file paths or output preferences.
+
+5. **Download Results**:
+    - Once the operation is complete, download the processed files directly from the web interface.
+
+Enjoy the convenience of managing your PDF files effortlessly with FUR_PDF's Django-powered web application!
 
 ## Contributing
 
