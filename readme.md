@@ -14,7 +14,7 @@ FUR_PDF is a Python-based project designed to simplify and enhance PDF processin
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/FUR_PDF.git
+    git clone https://github.com/smartshopia/FUR_PDF_unofficial.git
     ```
 2. Navigate to the project directory:
     ```bash
@@ -34,7 +34,7 @@ Using FUR_PDF is simple and user-friendly. Follow these steps to get started:
       ```bash
       python manage.py runserver
       ```
-    - Open your web browser and navigate to `http://127.0.0.1:8000`.
+    - Open your web browser and navigate to <a href="http://127.0.0.1:8000" target="_blank">`http://127.0.0.1:8000`</a>.
 
 2. **Upload Your PDF Files**:
     - Use the provided web interface to upload the PDF files you want to process.
