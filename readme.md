@@ -1,5 +1,4 @@
 # FUR_PDF
-
 FUR_PDF is a Python-based project designed to simplify and enhance PDF processing tasks. Whether you need to extract text, merge files, or manipulate PDF documents, this tool provides a robust and efficient solution.
 
 ## Features
@@ -67,4 +66,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-For questions or support, please contact [smartshopiapk+furpdfuo@gmail.com].
+For questions or support, please [email us](mailto:smartshopiapk+furpdfuo@gmail.com?subject=Support%20for%20FUR%20PDF).
