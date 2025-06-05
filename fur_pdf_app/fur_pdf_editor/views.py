@@ -4,7 +4,7 @@ from .models import *
 import fitz
 
 # Create your views here.
-
+#pages
 def home(request):
     return render(request, 'home.html')
 
@@ -21,17 +21,19 @@ def signup_view(request):
     return render(request, 'signup.html')
 
 def features(request):
-    return render(request, 'bootstrap.html')
+    return render(request, 'features.html')
 
 def pricing(request):
-    return render(request, 'bootstrap.html')
+    return render(request, 'pricing.html')
 
 def about(request):
-    return render(request, 'bootstrap.html')
+    return render(request, 'about.html')
 
 def contact(request):
-    return render(request, 'bootstrap.html')
+    return render(request, 'contact.html')
 
+
+#functions
 def upload_pdf(request):
     if request.method == 'POST':
         form = PDFUploadForm(request.POST, request.FILES)

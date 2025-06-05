@@ -18,8 +18,15 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include
 from django.conf.urls.static import static
+from django.contrib.sitemaps.views import sitemap
 
 urlpatterns = [
+    path('sitemap.xml',
+     sitemap, {'sitemaps': settings.SITEMAPS},
+      name='django.contrib.sitemaps.views.sitemap'),
+    path('sitemap-index.xml',
+     sitemap, {'sitemaps': settings.SITEMAPS},
+      name='django.contrib.sitemaps.views.sitemap_index'),
     path('', include('fur_pdf_editor.urls')),
     path('admin/', admin.site.urls),
     #path('pdf/', include('fur_pdf_editor.urls')),

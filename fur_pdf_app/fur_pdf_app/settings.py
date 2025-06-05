@@ -28,6 +28,13 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+SITEMAPS = {
+    'fur_pdf_editor': {
+        'models': ['fur_pdf_editor.models.PDFDocument'],
+        'sitemap_url_name': 'django.contrib.sitemaps.views.sitemap',
+    },
+}
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,6 +47,8 @@ INSTALLED_APPS = [
     'fur_pdf_editor',
     'rest_framework',
     'django_bootstrap5',
+    'django.contrib.sitemaps',
+    'django.contrib.sites',
     #'tailwind',
 ]
 
