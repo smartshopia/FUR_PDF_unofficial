@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Login {% endblock %}
+{% block title %}Login - FUR PDF Editor{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
@@ -20,7 +20,101 @@
                 <button type="submit" class="btn btn-primary">Login</button>
             </div>
         </form>
+        <div class="text-center my-3">
+            <p>Or sign in with:</p>
+            <a href="#" class="btn btn-outline-danger mb-1">Google</a>
+            <a href="#" class="btn btn-outline-primary mb-1">Facebook</a>
+            <a href="#" class="btn btn-outline-dark mb-1">GitHub</a>
+        </div>
+        <div class="text-center my-3">
+            <form method="post" action="{% url 'send_magic_link' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="magic_email" class="form-label">Sign in with Magic Link</label>
+                    <input type="email" id="magic_email" name="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <button type="submit" class="btn btn-success">Send Magic Link</button>
+            </form>
+        </div>
         <p class="text-center mt-3">Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+    </div>
+    <span class="text-danger d-block text-center">
+        {% if form.errors %}
+            {{ form.errors }}
+        {% endif %}
+    </span>
+    <span class="text-success d-block text-center">
+        {% if success_message %}
+            {{ success_message }}
+        {% endif %}
+    </span>
+    <span class="text-danger d-block text-center">
+        {% if error_message %}
+            {{ error_message }}
+        {% endif %}
+    </span>
+    <span class="text-danger d-block text-center">
+        {% if not form.is_valid %}
+            Please correct the errors above.
+        {% endif %}
+    </span>
+    <span class="text-success d-block text-center">
+        {% if form.is_valid %}
+            Form is valid.
+        {% endif %}
+    </span>
+    <span class="text-danger d-block text-center">
+        {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+        {% endif %}
+    </span>
+    <span class="text-success d-block text-center">
+        {% if form.cleaned_data %}
+            Form cleaned data: {{ form.cleaned_data }}
+        {% endif %}
+    </span>
+    <span class="text-danger d-block text-center">
+        {% if form.errors %}
+            Form errors: {{ form.errors }}
+        {% endif %}
+    </span>
+    <span class="text-success d-block text-center">
+        {% if form.is_bound %}
+            Form is bound.
+        {% endif %}
+    </span>
+    <span class="text-danger d-block text-center">
+        {% if form.is_valid %}
+            Form is valid.
+        {% endif %}
+    </span>
+    <span class="text-success d-block text-center">
+        {% if form.is_submitted %}
+            Form has been submitted.
+        {% endif %} 
+    </span>
+    <span class="text-danger d-block text-center">
+        {% if form.is_multipart %}
+            Form is multipart.
+        {% endif %}
+    </span>
+    <span class="text-success d-block text-center">
+        {% if form.is_initial %}
+            Form is initial.
+        {% endif %}
+    </span>
+    <style>
+        .login-flex-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 23.7vh;
+        }
+        .flex-spacer {
+            flex: 1 1 auto;
+        }
+    </style>
+    <div class="login-flex-container"></div>
+        <span class="flex-spacer"></span>
     </div>
 </div>
 {% endblock %}

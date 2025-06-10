@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Login Successful - FUR PDF Editor{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h2>Login Successful!</h2>
+    <p>
+        You have been successfully logged in using your magic link.<br>
+        Welcome back, {{ user.username }}!
+    </p>
+    <a href="{% url 'home' %}" class="btn btn-success mt-3">Go to Dashboard</a>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Invalid or Expired Link - FUR PDF Editor{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h2>Invalid or Expired Link</h2>
+    <p>
+        The magic link you used is invalid or has expired.<br>
+        Please request a new magic link to log in.
+    </p>
+    <a href="{% url 'login' %}" class="btn btn-primary mt-3">Back to Login</a>
+</div>
+{% endblock %}

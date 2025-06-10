@@ -1,0 +1,12 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Magic Link Login</title>
+</head>
+<body>
+    <p>Hi {{ user.username }},</p>
+    <p>Click the link below to log in:</p>
+    <a href="http://{{ domain }}{% url 'verify_magic_link' uidb64=uidb64 token=token %}">Login</a>
+</body>
+</html>

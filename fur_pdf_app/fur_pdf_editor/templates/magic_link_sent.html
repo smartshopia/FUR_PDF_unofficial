@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Magic Link Sent - FUR PDF Editor{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h2>Check Your Email</h2>
+    <p>
+        We've sent a magic login link to <strong>{{ email }}</strong>.<br>
+        Please open your email client and click the link to log in.
+    </p>
+    <a href="/" class="btn btn-primary mt-3">Back to Home</a>
+</div>
+{% endblock %}

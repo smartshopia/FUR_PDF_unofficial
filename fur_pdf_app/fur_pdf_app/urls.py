@@ -29,5 +29,6 @@ urlpatterns = [
       name='django.contrib.sitemaps.views.sitemap_index'),
     path('', include('fur_pdf_editor.urls')),
     path('admin/', admin.site.urls),
+    #path('auth/', include('fur_pdf_editor.urls')),
     #path('pdf/', include('fur_pdf_editor.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

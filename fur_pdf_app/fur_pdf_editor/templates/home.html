@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Home - PDF Editor App{% endblock %}
+{% block title %}Home - FUR PDF Editor{% endblock %}
 
 {% block content %}
 <!-- <p class="lead">Easily upload, view, and edit your PDFs all in one place.</p> -->
@@ -67,6 +67,9 @@
             <i class="bi bi-save fs-1 text-primary"></i>
             <h4 class="mt-3">Save and Download</h4>
             <p>Save your edits and download the PDFs with just one click.</p>
+        </div>
+        <div class="row justify-content-center">
+            <a href="{% url 'features' %}" class="btn btn-primary btn-lg" style="width: fit-content;">More Features</a>
         </div>
     </div>
 </section>

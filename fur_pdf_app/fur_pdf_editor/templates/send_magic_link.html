@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Magic Link - FUR PDF Editor{% endblock %}
+
+{% block content %}
+
+    <h1>Send Magic Link</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+        <button type="submit">Send Magic Link</button>
+    </form>
+{% endblock %}
