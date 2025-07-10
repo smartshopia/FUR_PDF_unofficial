@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf import settings
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
+from fur_pdf_editor.views import protected_media
+from two_factor.urls import urlpatterns as tf_urls
 
 urlpatterns = [
     path('sitemap.xml',
@@ -29,6 +31,12 @@ urlpatterns = [
       name='django.contrib.sitemaps.views.sitemap_index'),
     path('', include('fur_pdf_editor.urls')),
     path('admin/', admin.site.urls),
+    path('', include(tf_urls)),
     #path('auth/', include('fur_pdf_editor.urls')),
     #path('pdf/', include('fur_pdf_editor.urls')),
+    #path('', include('two_factor.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
+    re_path(r'^protected-media/(?P<path>.*)$', protected_media),
+]

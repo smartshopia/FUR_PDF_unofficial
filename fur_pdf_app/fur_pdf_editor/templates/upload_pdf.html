@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Upload PDF</title>
-</head>
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Upload PDF - FUR PDF Editor{% endblock %}
+
+{% block content %}
 <body>
     <h1>Upload PDF</h1>
     <form method="post" enctype="multipart/form-data">
@@ -12,4 +13,4 @@
         <button type="submit">Upload</button>
     </form>
 </body>
-</html>
+{% endblock %}

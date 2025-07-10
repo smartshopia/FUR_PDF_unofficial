@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<head>
+    <title>About - FUR PDF Editor</title>
+    <style>
+        h1 {
+            color: #333;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .container-about {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .team {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .team-member {
+            background: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 200px;
+        }
+        .team-member img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+        .team-member h3 {
+            margin: 10px 0 5px;
+            font-size: 1.2em;
+        }
+        .team-member p {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .team-member a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .team-member a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-about">
+        <h1>About FUR PDF Editor</h1>
+        <p>FUR PDF Editor is a powerful web application designed to help users edit, annotate, and manage PDF documents with ease. Our mission is to provide a user-friendly platform that simplifies PDF editing tasks for everyone.</p>
+        
+        <h2>Our Team</h2>
+        <div class="team">
+            <div class="team-member">
+                <img src="{{ MEDIA_URL }}/media/default_profile_male.png" alt="Fida Ur Rehman">
+                <h3>Fida Ur Rehman</h3>
+                <p>Lead Developer/Owner</p>
+                <a href=""></a>
+            </div>
+            <div class="team-member">
+                <img src="{{ MEDIA_URL }}/media/default_profile.png" alt="Team Member 2">
+                <h3>Jane Smith</h3>
+                <p>UI/UX Designer</p>
+                <a href=""></a> 
+            </div>
+            <div class="team-member">
+                <img src="{{ MEDIA_URL }}/media/default_profile.png" alt="Team Member 3">
+                <h3>Mike Johnson</h3>
+                <p>Product Manager</p>
+                <a href=""></a>
+            </div>
+            <div class="team-member">
+                <img src="{{ MEDIA_URL }}/media/default_profile.png" alt="Team Member 4">
+                <h3>Emily Davis</h3>
+                <p>Quality Assurance</p>
+                <a href=""></a>
+            </div>
+                        <div class="team-member">
+                <img src="{{ MEDIA_URL }}/media/default_profile.png" alt="Team Member 4">
+                <h3>Emily Davis</h3>
+                <p>Quality Assurance</p>
+                <a href=""></a>
+            </div>
+                        <div class="team-member">
+                <img src="{{ MEDIA_URL }}/media/default_profile.png" alt="Team Member 4">
+                <h3>Emily Davis</h3>
+                <p>Quality Assurance</p>
+                <a href=""></a>
+            </div>
+        </div>
+        </div>
+    <p>Thank you for choosing FUR PDF Editor. We are committed to continuously improving our application to meet your needs.</p>
+    <a href="/" class="btn btn-primary mt-3">Back to Home</a>
+</body>
+{% endblock %}
+{% block title %}About Us - FUR PDF Editor{% endblock %}
+{% load static %}

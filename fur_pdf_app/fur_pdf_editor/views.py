@@ -11,10 +11,16 @@ from django.utils.encoding import force_bytes, force_str
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.urls import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse, Http404, JsonResponse
 from django.utils.crypto import get_random_string
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.conf import settings
+import os
+from django_otp import devices_for_user
+from two_factor.views.core import LoginView as TwoFactorLoginView
 
 # Create your views here.
 #pages
@@ -27,11 +33,26 @@ def tailwind(request):
 def boot(request):
     return render(request, 'bootstrap.html')
 
-def login_view(request):
-    return render(request, 'login.html')
+""" def login_view(request):
+    if request.method == 'POST':
+        form = CustomLoginForm(request, data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect('home')
+    else:
+        form = CustomLoginForm()
+    return render(request, 'login.html', {'form': form}) """
 
 def signup_view(request):
-    return render(request, 'signup.html')
+    if request.method == 'POST':
+        form = CustomSignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = CustomSignupForm()
+    return render(request, 'signup.html', {'form': form})
 
 def features(request):
     return render(request, 'features.html')
@@ -152,3 +173,57 @@ def verify_magic_link(request, uidb64, token):
         return render(request, 'magic_link_success.html', {'user': user})
     else:
         return render(request, 'magic_link_invalid.html')
+    
+#upgrade and contact sales
+def upgrade(request):
+    # Logic to handle upgrade (e.g., payment, plan change)
+    return render(request, 'upgrade.html')
+
+def contact_sales(request):
+    # Logic to handle contact sales form
+    return render(request, 'contact_sales.html')
+
+@login_required
+def profile_view(request):
+    user_form = UserForm(instance=request.user)
+    profile_form = ProfileForm(instance=request.user.profile)
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('profile')
+    return render(request, 'profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'profile_pic_url': request.user.profile.get_profile_pic_url(),
+    })
+
+def protected_media(request, path):
+    if not request.user.is_authenticated:
+        raise Http404()
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    return FileResponse(open(file_path, 'rb'))
+
+def lockout(request, credentials, *args, **kwargs):
+    return JsonResponse({"status": "Locked out due to too many login failures"}, status=403)
+
+def custom_login_view(request):
+    if request.method == 'POST':
+        form = CustomLoginForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            # Check if user has a confirmed OTP device
+            has_otp = any(device.confirmed for device in devices_for_user(user))
+            if has_otp:
+                request.session['pre_2fa_user_pk'] = user.pk
+                return redirect(reverse('two_factor:login'))
+            else:
+                login(request, user)
+                return redirect('home')
+        else:
+            return render(request, 'login.html', {'form': form})
+    else:
+        form = CustomLoginForm()
+    return render(request, 'login.html', {'form': form})

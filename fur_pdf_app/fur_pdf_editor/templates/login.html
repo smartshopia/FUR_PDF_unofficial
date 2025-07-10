@@ -8,14 +8,7 @@
         <h2 class="text-center">Login</h2>
         <form method="post">
             {% csrf_token %}
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" id="username" name="username" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-            </div>
+            {{ form.as_p }}
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Login</button>
             </div>
@@ -39,6 +32,9 @@
         <p class="text-center mt-3">Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
     </div>
     <span class="text-danger d-block text-center">
+        {% if error %}
+            {{ error }}
+        {% endif %}
         {% if form.errors %}
             {{ form.errors }}
         {% endif %}
@@ -53,68 +49,10 @@
             {{ error_message }}
         {% endif %}
     </span>
-    <span class="text-danger d-block text-center">
-        {% if not form.is_valid %}
-            Please correct the errors above.
-        {% endif %}
-    </span>
-    <span class="text-success d-block text-center">
-        {% if form.is_valid %}
-            Form is valid.
-        {% endif %}
-    </span>
-    <span class="text-danger d-block text-center">
-        {% if form.non_field_errors %}
-            {{ form.non_field_errors }}
-        {% endif %}
-    </span>
-    <span class="text-success d-block text-center">
-        {% if form.cleaned_data %}
-            Form cleaned data: {{ form.cleaned_data }}
-        {% endif %}
-    </span>
-    <span class="text-danger d-block text-center">
-        {% if form.errors %}
-            Form errors: {{ form.errors }}
-        {% endif %}
-    </span>
-    <span class="text-success d-block text-center">
-        {% if form.is_bound %}
-            Form is bound.
-        {% endif %}
-    </span>
-    <span class="text-danger d-block text-center">
-        {% if form.is_valid %}
-            Form is valid.
-        {% endif %}
-    </span>
-    <span class="text-success d-block text-center">
-        {% if form.is_submitted %}
-            Form has been submitted.
-        {% endif %} 
-    </span>
-    <span class="text-danger d-block text-center">
-        {% if form.is_multipart %}
-            Form is multipart.
-        {% endif %}
-    </span>
-    <span class="text-success d-block text-center">
-        {% if form.is_initial %}
-            Form is initial.
-        {% endif %}
-    </span>
-    <style>
-        .login-flex-container {
-            display: flex;
-            flex-direction: column;
-            min-height: 23.7vh;
-        }
-        .flex-spacer {
-            flex: 1 1 auto;
-        }
-    </style>
-    <div class="login-flex-container"></div>
-        <span class="flex-spacer"></span>
-    </div>
+    {% if two_factor_required %}
+        <div class="alert alert-info text-center">
+            Two-factor authentication is required. Please complete the next step.
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

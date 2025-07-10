@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>PDF List - FUR PDF Editor</title>
-</head>
+{% extends "base.html" %}
+
+{% block title %}PDF List - FUR PDF Editor{% endblock %}
+
+{% block content %}
 <body>
     <h1>Uploaded PDFs</h1>
     <ul>
@@ -15,4 +14,4 @@
     </ul>
     <a href="{% url 'upload_pdf' %}">Upload a new PDF</a>
 </body>
-</html>
+{% endblock %}

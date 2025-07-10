@@ -25,8 +25,17 @@ SECRET_KEY = 'django-insecure-218l5#b8=yxsw86wqrv9s1si5z9%l$4)qdj0s+wtxwnnub$)1p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+AUTH_USER_MODEL = 'fur_pdf_editor.CustomUser'
+
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+# CSRF_TRUSTED_ORIGINS = ['https://yourdomain.com']  # Uncomment and set your domain for production
+# CSRF_COOKIE_SAMESITE = 'Strict'  # Uncomment for stricter CSRF protection
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
 
 SITEMAPS = {
     'fur_pdf_editor': {
@@ -34,6 +43,14 @@ SITEMAPS = {
         'sitemap_url_name': 'django.contrib.sitemaps.views.sitemap',
     },
 }
+
+LOGIN_URL = 'two_factor:login'
+
+# this one is optional
+LOGIN_REDIRECT_URL = 'two_factor:profile'
+
+TWO_FACTOR_CALL_GATEWAY= 'two_factor.gateways.fake.Fake'
+TWO_FACTOR_SMS_GATEWAY= 'two_factor.gateways.fake.Fake'
 
 # Use console email backend for development
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -58,6 +75,14 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'django.contrib.sitemaps',
     'django.contrib.sites',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_email',
+    'two_factor',
+    'phonenumber_field',  # if using phone number 2FA
+    'two_factor.plugins.email',  # <- if you want email capability.
+    'axes',
     #'tailwind',
 ]
 
@@ -69,8 +94,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'fur_pdf_app.urls'
@@ -152,3 +179,42 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SITE_ID = 2
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'django_warnings.log',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+        'two_factor': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    }
+}
+
+# Axes settings
+AXES_ENABLED = True
+AXES_COOLOFF_TIME = 2
+AXES_FAILURE_LIMIT = 5
+
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]

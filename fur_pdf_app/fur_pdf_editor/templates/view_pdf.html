@@ -1,12 +1,12 @@
+{% extends "base.html" %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ pdf.title }}</title>
+{% block title %}{{ pdf.title }}View PDF - FUR PDF Editor{% endblock %}
 
+{% block content %}
+
+<head>
     <!-- PDF.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 
@@ -272,4 +272,4 @@
         <a href="{{ pdf.file.url }}" download>Download PDF</a>
     </div>
 </body>
-</html>
+{% endblock %}
